@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-nginx-deployment
+spec:
+  selector:
+    matchLabels:
+      app: my-nginx-label
+  replicas: 1
+
+  template:
+    metadata:
+      labels:
+        app: my-nginx-label
+    spec:
+      containers:
+      - name: my-nginx-container
+        image: nginx:alpine
+        ports:
+        - containerPort: 80
+        resources: # alternative to that use resources: {}
+          limits:
+            memory: "128Mi" #128 MB
+            cpu: "100m" #100 millicpu (.1 cpu or 10% of the cpu)
+        livenessProbe:
+          httpGet:
+            path: /index.html
+            port: 80
+          initialDelaySeconds: 15
+          timeoutSeconds: 2 # Default is 1
+          periodSeconds: 5 # Default is 10
+          failureThreshold: 1 # Default is 3

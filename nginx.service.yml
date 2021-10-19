@@ -1,0 +1,13 @@
+# exposing pods with load balancer type service
+apiVersion: v1
+kind: Service
+metadata:
+ name: nginx-loadbalancer
+spec:
+ type: LoadBalancer
+ selector:
+    app: my-nginx-label
+ ports:
+  - name: "80"
+    port: 80
+    targetPort: 80
